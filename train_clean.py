@@ -30,9 +30,6 @@ def train(max_epoch):
     # Training loop
     IterationNum = 0
     for epoch in range(max_epoch): #args.num_epochs):
-        
-        torch.cuda.empty_cache()
-        
         print("Training")
         # Training
         model.train()
@@ -51,12 +48,8 @@ def train(max_epoch):
             optimizer.zero_grad()
 
             output, output_class = model(input_data, vector)
-            
-            del input_data
 
             vector_label = vector_class(vector).to(device)#, device)
-            
-            del vector
             
             # Compute loss(es)
             loss1 = criterion1(output, label)
@@ -66,14 +59,6 @@ def train(max_epoch):
 
             print(f"Training Iteration {IterationNum}, Loss 1: {loss1}, Loss 2: {loss2}, Loss 3: {loss3}, Total: {loss}", flush=True)
 
-            del label
-            del vector_label
-            del output
-            del loss1
-            del loss2
-            del loss3
-            torch.cuda.empty_cache()
-            
             # Backpropagation and optimization
             loss.backward()
             optimizer.step()
@@ -119,11 +104,6 @@ def validation():
                 total_mae += mae
                 num_samples += 1
 
-                del input_data
-                del label 
-                del vector
-                del output
-                
                 torch.cuda.empty_cache()
 
     # Calculate average MAE on the validation set
@@ -171,7 +151,6 @@ if __name__ == '__main__':
     #best_dice = float('inf')
     best_epoch = -1
     
-    torch.cuda.empty_cache()
     print('Begin Training...')
     train(args.num_epochs)
 
