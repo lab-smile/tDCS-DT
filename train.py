@@ -25,7 +25,7 @@ from utils import create_dataloaders, MultiModel, vector_class, reg_ece
 #Set Cuda Device
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-def train(max_epoch):
+def train(max_epoch, save_path_model):
 
     # Training loop
     IterationNum = 0
@@ -89,7 +89,7 @@ def train(max_epoch):
         if avg_mae < best_mae:
             best_mae = avg_mae
             best_epoch = epoch
-            torch.save(model.state_dict(), save_path)
+            torch.save(model.state_dict(), save_path_model)
 
         print(f"Epoch [{epoch+1}/{num_epochs}], MAE: {avg_mae}", flush=True)
 
@@ -145,6 +145,10 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     
+    print('Setting Model Path for Saving...')
+    os.makedirs('Models', exist_ok=True)
+    save_path_model = os.path.join('Models', args.save_path)
+    
     print('Loading Data...')
     # Set subdirectory paths based on the root directory
     train_subjects_path = os.path.join(args.root_dir, 'Train_ACT', 'train.npy')
@@ -173,6 +177,6 @@ if __name__ == '__main__':
     
     torch.cuda.empty_cache()
     print('Begin Training...')
-    train(args.num_epochs)
+    train(args.num_epochs, save_path_model)
 
 
