@@ -87,11 +87,17 @@ Download pre-trained models [here](https://forms.gle/3GPnXXvWgaM6RZvr5)
 
 ## Acknowledgement
 
-This work was supported by the National Institutes ofHealth/National Institute on Aging (NIA RF1AG071469, NIA R01AG054077),the National Science Foundation (1908299), and the NSF-AFRL INTERN Supplement (2130885). 
+This work was supported by the National Institutes of Health/National Institute on Aging (NIA RF1AG071469, NIA R01AG054077), the National Science Foundation (1842473, 1908299, 2123809), the University of Florida McKnight Brain Institute, the University of Florida Center for Cognitive Aging and Memory, and the McKnight Brain Research Foundation. 
 
+Source Networks - 
 
-We employ UNETR as our base model from:
-https://github.com/Project-MONAI/research-contributions/tree/main/UNETR
+SwinUNETR:
+https://arxiv.org/abs/2201.01266
+https://github.com/Project-MONAI/research-contributions/tree/main/SwinUNETR
+
+EfficientNet:
+https://arxiv.org/pdf/1905.11946
+https://github.com/lukemelas/EfficientNet-PyTorch
 
 ## Contact
 For any discussion, suggestions and questions please contact: [Skylar Stolte](mailto:skylastolte4444@ufl.edu), [Dr. Ruogu Fang](mailto:ruogu.fang@bme.ufl.edu).
