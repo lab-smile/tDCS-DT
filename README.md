@@ -34,56 +34,26 @@ International Conference on Medical Image Computing and Computer Assisted Interv
 <br>
 
 ## Usage
-You can find there are two MATLAB codes, you can directly change the directory to your own data. You need to select the DOMINO++ working folder and add to path before you running these two MATLAB codes. 
 
-In case of you are using different version of MATLAB, if you are using MATLAB 2020b, you need to change line 56 to :
-```
-image(index) = tissue_cond_updated.Labels(k)
-```
-Then you can run the combine_mask.m. The output should be a Data folder with the following structure: 
-```
-Data ImagesTr sub-TrX_T1.nii sub-TrXX_T1.nii ... 
-ImagesTs sub-TsX_T1.nii sub-TsXX_T1.nii ...
-LabelsTr sub-TrX_seg.nii sub-TrXX_seg.nii ...
-LabelsTs sub-TsX_seg.nii sub-TsX_seg.nii ...
-```
-Maneuver to the /your_data/Data/. Run make_datalist_json.m
+### Data Preparation
+[Text]
 
-After this code is done, you may exit MATLAB and open the terminal to run the other codes.
-
-### Build container
-The DOMINO++ code uses the MONAI, an open-source foundation. We provide a .sh script to help you to build your own container for running your code.
-
-Run the following code in the terminal, you need to change the line after --sandbox to your desired writable directory and change the line after --nv to your own directory.
-```
-sbatch building_container_v110.sh
-```
-
-The output should be a folder named monaicore110 under your desired directory.
+### Conda Environment
+[Text]
 
 ### Training
-Once the data and the container are ready, you can train the model by using the following command:
+[Text]
 ```
-sbatch train.sh
+[Code Block]
 ```
-Before you training the model, you need to make sure change the following directory:
-- change the first singularity exec -nv to the directory includes monaicore110, for example: /user/DOMINOPlusPlus/monaicore110
-- change the line after --bind to the directory includes monaicore110
-- change the data_dir to your data directory
-- change the model name to your desired model name
-You can also specify the max iteration number for training. For the iterations = 100, the training progress might take about one hours, and for the iterations = 25,000, the training progress might take about 24 hours. 
+[Text]
 
 ### Testing
-The test progress is very similar to the training progress. You need to change all paths and make sure the model_save_name matches your model name in runMONAI.sh. Then running the runMONAI_test.sh with the following command: 
+[Text] 
 ```
-sbatch test.sh
+[Code Block]
 ```
-The outputs for each test subject is saved as a mat file.
-
-### Pre-trained models
-You can also use the pre-trained models we provide for testing, please fill out the following request form before accessing the DOMINO++ models.
-Download pre-trained models [here](https://forms.gle/3GPnXXvWgaM6RZvr5)
-
+[Text]
 
 ## Acknowledgement
 
