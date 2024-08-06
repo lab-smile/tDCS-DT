@@ -1,10 +1,11 @@
-# [Paper Title]
-[Description]
+# Towards tDCS Digital Twins using Deep Learning-based Direct Estimation of Personalized Electrical Field Maps from T1-Weighted MRI
+
+Transcranial Direct Current Stimulation (tDCS) is a non-invasive brain stimulation method that applies neuromodulatory effects to the brain via low-intensity, direct current. It has shown possible pos- itive effects in areas such as depression, substance use disorder, anxiety, and pain. Unfortunately, mixed trial results have delayed the field’s progress. Electrical current field approximation provides a way for tDCS researchers to estimate how an individual will respond to specific tDCS parameters. Publicly available physics-based stimulators have led to much progress; however, they can be error-prone, susceptible to quality issues (e.g., poor segmentation), and take multiple hours to run. Digital functional twins provide a method of estimating brain function in response to stimuli using computational methods. We seek to implement this idea for individualized tDCS. Hence, this work provides a proof-of-concept for generating electrical field maps for tDCS directly from T1-weighted magnetic resonance images (MRIs). Our deep learning method employs special loss regularizations to improve the model’s generalizability and calibration across individual scans and electrode montages. Users may enter a desired electrode montage in addition to the unique MRI for a custom output. Our dataset includes 442 unique individual heads from individuals across the adult lifespan. The pipeline can generate results on the scale of minutes, unlike physics-based systems that can take 1-3 hours. Overall, our methods will help streamline the process of individual current dose estimations for improved tDCS interventions.
 
 ## Paper
 This repository provides the official implementation of training and evaluation of the model as described in the following paper:
 
-**[Paper Title]**
+**Towards tDCS Digital Twins using Deep Learning-based Direct Estimation of Personalized Electrical Field Maps from T1-Weighted MRI**
 
 Skylar E. Stolte<sup>1</sup>, Aprinda Indahlastari<sup>2,3</sup>, Alejandro Albizu<sup>2,4</sup>, Adam J. Woods<sup>2,3,4</sup>, and Ruogu Fang<sup>1,2,5*</sup>
 
@@ -15,20 +16,20 @@ Skylar E. Stolte<sup>1</sup>, Aprinda Indahlastari<sup>2,3</sup>, Alejandro Albi
 <sup>5</sup> Department of Electrical and Computer Engineering, Herbert Wertheim College ofEngineering, UF, USA<br>
 
 International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI) 2024<br>
-[paper](TO BE ADDED) | [code](TO BE ADDED) | [poster](TO BE ADDED)
+[paper](TO BE ADDED) | [code]https://github.com/lab-smile/tDCS-DT | [poster](TO BE ADDED)
 
 ## Major results from our work
 
-- DOMINO++ improves model performance on head segmentation problems from T1 MRIs
-- DOMINO++ particularly improves performance on datasets with rotations, which simulates motion artifacts in MRI
-- DOMINO++ also performs better than DOMINO or the baseline model on the standard images, images with Gaussian noise, or different scanner data.
+- Custom dataset of T1-weighted MRIs and tDCS current maps for 442 individual heads across the lifespan
+- Dual training system and loss regularization that also incorporates calibration
+- Proof-of-concept results for the generation of tDCS current estimations directly from MRIs using deep learning
 
 <div align="center">
-	<img src = "Images/Img3_3114.png">
+	<img src = "Images/Figure1-1533.pdf">
 </div>
 
 <div align="center">
-  <b>fig. 1:</b> Visual comparison of segmentation performance on a noisy MRI image from Site A. The yellow rectangular regions show areas where DOMINO++ im- proves the segmentation. The orange regions show areas that DOMINO and DOMION++ improve the segmentation over the baseline model.<br>
+  <b>fig. 1:</b> Method Pipeline.<br>
 </div>
 <br>
 
