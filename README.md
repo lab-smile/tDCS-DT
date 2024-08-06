@@ -25,7 +25,7 @@ International Conference on Medical Image Computing and Computer Assisted Interv
 - Proof-of-concept results for the generation of tDCS current estimations directly from MRIs using deep learning
 
 <div align="center">
-	<img src = "Images/Figure1-1533.pdf">
+	<img src = "Images/Figure1-1533.png">
 </div>
 
 <div align="center">
