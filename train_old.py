@@ -25,11 +25,14 @@ from utils import create_dataloaders, MultiModel, vector_class, reg_ece
 #Set Cuda Device
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-def train(max_epoch):
+def train(max_epoch, save_path_model):
 
     # Training loop
     IterationNum = 0
     for epoch in range(max_epoch): #args.num_epochs):
+        
+        torch.cuda.empty_cache()
+        
         print("Training")
         # Training
         model.train()
@@ -48,8 +51,12 @@ def train(max_epoch):
             optimizer.zero_grad()
 
             output, output_class = model(input_data, vector)
+            
+            del input_data
 
             vector_label = vector_class(vector).to(device)#, device)
+            
+            del vector
             
             # Compute loss(es)
             loss1 = criterion1(output, label)
@@ -59,6 +66,14 @@ def train(max_epoch):
 
             print(f"Training Iteration {IterationNum}, Loss 1: {loss1}, Loss 2: {loss2}, Loss 3: {loss3}, Total: {loss}", flush=True)
 
+            del label
+            del vector_label
+            del output
+            del loss1
+            del loss2
+            del loss3
+            torch.cuda.empty_cache()
+            
             # Backpropagation and optimization
             loss.backward()
             optimizer.step()
@@ -74,7 +89,7 @@ def train(max_epoch):
         if avg_mae < best_mae:
             best_mae = avg_mae
             best_epoch = epoch
-            torch.save(model.state_dict(), save_path)
+            torch.save(model.state_dict(), save_path_model)
 
         print(f"Epoch [{epoch+1}/{num_epochs}], MAE: {avg_mae}", flush=True)
 
@@ -104,6 +119,11 @@ def validation():
                 total_mae += mae
                 num_samples += 1
 
+                del input_data
+                del label 
+                del vector
+                del output
+                
                 torch.cuda.empty_cache()
 
     # Calculate average MAE on the validation set
@@ -124,6 +144,10 @@ if __name__ == '__main__':
     parser.add_argument('-save_path', type=str, default='best_model.pth', help='save model')
     
     args = parser.parse_args()
+    
+    print('Setting Model Path for Saving...')
+    os.makedirs('Models', exist_ok=True)
+    save_path_model = os.path.join('Models', args.save_path)
     
     print('Loading Data...')
     # Set subdirectory paths based on the root directory
@@ -151,7 +175,8 @@ if __name__ == '__main__':
     #best_dice = float('inf')
     best_epoch = -1
     
+    torch.cuda.empty_cache()
     print('Begin Training...')
-    train(args.num_epochs)
+    train(args.num_epochs, save_path_model)
 
 

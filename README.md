@@ -36,24 +36,67 @@ International Conference on Medical Image Computing and Computer Assisted Interv
 ## Usage
 
 ### Data Preparation
-[Text]
+Our dataset consisted of unprocessed T1-weighted structural magnetic resonance images (MRIs) from our own in-house dataset and the T1-weighted MRIs from the 1200 Subject Release from the Human Connectome Project's (HCP) Young Adult Study (https://www.humanconnectome.org/study/hcp-young-adult/document/1200-subjects-data-release). Our dataset is still private awaiting the results of the finished parent study, but you can obtain the HCP data from filling out their permissions forms in accordance with their website.
+
+The Data should be arranged within a root_dir of any name with the default as "Data". "Data" needs to contain folders named "Train", "Val", "Test". Each of these folders contain an additional three folders "T1", "J_C3Fp2", and "J_F3F4". They also need a .npy file with the image names. Samples of "train.npy", "val.npy", and "test.npy" are in each of the associated folders (Train, Val, Test, respectively) for reference.
+
+### ROAST
+
+The reference data is generated using the Parra lab's ROAST tool (https://github.com/andypotatohy/roast). We used the electrical field outputs from this program to train our model. We used the below parameters when running ROAST.
+
+```
+% Recipe 
+recipe = {'F3',-2,'F4',2};  
+% I used F3-F4 and C3-Fp2 (one variation of M1-SO) as proof-of-concept for this paper
+
+% Mesh Options
+rb = 5; % Radial Bound
+ab = 30; % Angular Bound
+db = 0.3; % Distance Bound
+rr = 3; % Radius Edge Ratio
+mv = 10; % Max Elem Volume
+```
+
+You will need to use recipe of "F3-F4" and "C3-Fp2" once per participant to replicate this paper exactly. Rename files to be the subject number but in each appropriate folder. For instance, you have participant ID 100 in training. Then, you should put the T1.nii for participant 100 in "Train/T1/100.nii", the electrical field map results from ROAST with F3-F4 for participant 100 as "Train/J_F3F4/100.nii", and the electrical field map results from ROAST with C3-Fp2 for participant 100 as "Train/J_C3Fp2/100.nii". 
 
 ### Conda Environment
-[Text]
+Initiate a conda environment to establish the necessary libraries and toolboxes.
+
+```
+%Create a new conda environment named "tdcs"
+conda create --name tdcs
+
+%Activate the "tdcs" environment
+conda activate tdcs
+
+%Install packages listed in the requirements.txt file
+pip install -r requirements.txt
+
+%Close the environment
+conda deactivate
+```
 
 ### Training
-[Text]
+The training code can be run as below:
+
 ```
-[Code Block]
+conda activate tdcs
+
+python train.py -x 256 -y 256 -z 256 -batch_size 2 -root_dir 'Data' -num_epochs 100 -save_path 'model.pth'
 ```
-[Text]
+
+Change x, y, and z to the dimensions of your image size or your desired image size after cropping. The training code will crop the images automatically if you select a smaller size than your total image size. The batch_size can be changed depending on the memory of your gpu. The root_dir is where your source data is located. The num_epochs can be any number. The save_path is where your trained model saves.
 
 ### Testing
-[Text] 
+The training code can be run as below:
+
 ```
-[Code Block]
+conda activate tdcs
+
+python test.py -x 256 -y 256 -z 256 -batch_size 2 -root_dir 'Data' -save_path 'model.pth'
 ```
-[Text]
+
+The testing code needs to use the same arguments as the training code to work correctly. 
 
 ## Acknowledgement
 

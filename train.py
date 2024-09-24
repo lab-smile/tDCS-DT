@@ -25,14 +25,11 @@ from utils import create_dataloaders, MultiModel, vector_class, reg_ece
 #Set Cuda Device
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-def train(max_epoch, save_path_model):
+def train(max_epoch):
 
     # Training loop
     IterationNum = 0
     for epoch in range(max_epoch): #args.num_epochs):
-        
-        torch.cuda.empty_cache()
-        
         print("Training")
         # Training
         model.train()
@@ -51,12 +48,8 @@ def train(max_epoch, save_path_model):
             optimizer.zero_grad()
 
             output, output_class = model(input_data, vector)
-            
-            del input_data
 
             vector_label = vector_class(vector).to(device)#, device)
-            
-            del vector
             
             # Compute loss(es)
             loss1 = criterion1(output, label)
@@ -66,14 +59,6 @@ def train(max_epoch, save_path_model):
 
             print(f"Training Iteration {IterationNum}, Loss 1: {loss1}, Loss 2: {loss2}, Loss 3: {loss3}, Total: {loss}", flush=True)
 
-            del label
-            del vector_label
-            del output
-            del loss1
-            del loss2
-            del loss3
-            torch.cuda.empty_cache()
-            
             # Backpropagation and optimization
             loss.backward()
             optimizer.step()
@@ -89,7 +74,7 @@ def train(max_epoch, save_path_model):
         if avg_mae < best_mae:
             best_mae = avg_mae
             best_epoch = epoch
-            torch.save(model.state_dict(), save_path_model)
+            torch.save(model.state_dict(), save_path)
 
         print(f"Epoch [{epoch+1}/{num_epochs}], MAE: {avg_mae}", flush=True)
 
@@ -107,7 +92,7 @@ def validation():
         print("Validation")
         for batch in val_loader:
 
-            #Currently doing it like this because inferer was only working on one image at once. I welcome help fixing this.
+            #Currently doing it like this because inferer was only working on one image at once. 
             for idx in range(batch['input_data'].size(0)):
                 input_data = batch['input_data'][idx].unsqueeze(0).to(device)
                 label = batch['label'][idx].unsqueeze(0).to(device)
@@ -119,11 +104,6 @@ def validation():
                 total_mae += mae
                 num_samples += 1
 
-                del input_data
-                del label 
-                del vector
-                del output
-                
                 torch.cuda.empty_cache()
 
     # Calculate average MAE on the validation set
@@ -135,7 +115,7 @@ if __name__ == '__main__':
     parser.add_argument('-x', type=int, default=256, help='horizontal slice size')
     parser.add_argument('-y', type=int, default=256, help='vertical slice size')
     parser.add_argument('-z', type=int, default=256, help='thickness size')
-    parser.add_argument('-batch_size', type=int, default=1, help='thickness size')
+    parser.add_argument('-batch_size', type=int, default=1, help='batch size')
     parser.add_argument('-root_dir', type=str, default='Data_3D', help='root data directory')
     parser.add_argument('-in_channels_img', type=int, default=1, help='number of image channels')
     parser.add_argument('-in_channels_vector', type=int, default=2, help='number of electrode montages')
@@ -144,10 +124,6 @@ if __name__ == '__main__':
     parser.add_argument('-save_path', type=str, default='best_model.pth', help='save model')
     
     args = parser.parse_args()
-    
-    print('Setting Model Path for Saving...')
-    os.makedirs('Models', exist_ok=True)
-    save_path_model = os.path.join('Models', args.save_path)
     
     print('Loading Data...')
     # Set subdirectory paths based on the root directory
@@ -175,8 +151,7 @@ if __name__ == '__main__':
     #best_dice = float('inf')
     best_epoch = -1
     
-    torch.cuda.empty_cache()
     print('Begin Training...')
-    train(args.num_epochs, save_path_model)
+    train(args.num_epochs)
 
 
