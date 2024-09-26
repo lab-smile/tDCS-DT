@@ -115,6 +115,7 @@ https://github.com/lukemelas/EfficientNet-PyTorch
 ## Citation
 If you reference our work, please cite:
 
+```
 @inproceedings{stolte2024towards,
   author    = {Skylar E. Stolte and Aprinda Indahlastari and Alejandro Albizu and Adam J. Woods and Ruogu Fang},
   title     = {Towards tDCS Digital Twins Using Deep Learning-Based Direct Estimation of Personalized Electrical Field Maps from T1-Weighted MRI},
@@ -124,6 +125,7 @@ If you reference our work, please cite:
   publisher = {Springer Nature},
   year      = {2024},
 }
+```
 
 ## Contact
 For any discussion, suggestions and questions please contact: [Skylar Stolte](mailto:skylastolte4444@ufl.edu), [Dr. Ruogu Fang](mailto:ruogu.fang@bme.ufl.edu).
