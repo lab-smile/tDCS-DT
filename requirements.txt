@@ -10,7 +10,7 @@ torchvision==0.10.0
 torchaudio==0.9.0
 
 # MONAI 
-monai==0.6.0 
+monai==1.1.0 
 
 # TorchIO 
 torchio==0.18.57
